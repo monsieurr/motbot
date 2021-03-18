@@ -44,7 +44,7 @@ def send_tweet(api, topic):
 
 def send_tweet_with_media(api, topic, media):
     twitter_text = "test"
-    media = api.media_upload(media)
+    media = api.media_upload("test.png")
 
 
     print("screen to be uploaded : " + str(media))
@@ -58,10 +58,16 @@ def send_tweet_with_media(api, topic, media):
     #api.update_status(topic, media_ids=[medias_id[0], medias_id[1], medias_id[2], medias_id[3]])
 
 
+def select_image():
+    choice = "test.png"  # change dir name to whatever
+    print(choice)
+    return choice
+
+
 
 def remove_image(choice):
     try:
-        os.remove("images/"+choice)
+        os.remove(choice)
         print("file has been removed")
         return True
     except:
@@ -75,16 +81,16 @@ if __name__ == "__main__":
     select_random_function = random.randint(0, 2)
 
     topic = "#"+str(randomnb)
-    media = "test.png"
 
     random_color = clr.generate_random_color()
     quote = wd.select_quote("quotes.txt")
     quote = wd.capitalize_first_letter(quote)
 
     clr.generate_simple_art("test.png", random_color, quote)
+    media = select_image()
 
     try:
-        #send_tweet_with_media(api, topic, media)
+        send_tweet_with_media(api, topic, media)
         #remove_image(media)
         #send_tweet(api, topic)
         print("DONE")
