@@ -4,6 +4,7 @@ from os.path import join, dirname
 from dotenv import load_dotenv
 import random
 import words as wd
+import color as clr
 
 # Global variables
 dotenv_path = join(dirname(__file__), '.env')
@@ -41,32 +42,17 @@ def send_tweet(api, topic):
     print("TWEET SENT")
 
 
-def send_tweet_with_media(api, topic, medias):
+def send_tweet_with_media(api, topic, media):
     twitter_text = "test"
-    screen_upload = []
+    media = api.media_upload(media)
 
-    for index, screen in enumerate(screens):
-        print(index, screen)
-        print("screen to be uploaded : " + screen)
-        print(type(screen))
-        screen_upload.append(api.media_upload(
-            "movies/"+movie_folder+"/screens/"+screen))
 
-    media_id = []
+    print("screen to be uploaded : " + str(media))
+    print("The size of the file is : " + str(media.size) + " bytes")
 
-    for screen in screen_upload:
-        # printing the information
-        print("The media ID is : " + screen.media_id_string)
-        print("The size of the file is : " + str(screen.size) + " bytes")
-
-        media_id.append(screen.media_id_string)
-
-        # printing the dimensions
-        print("The width is : " + str(screen.image['w']) + " pixels.")
-        print("The height is : " + str(screen.image['h']) + " pixels.")
-
-    print(media_id)
-    api.update_status(topic, media_ids=[*media_id])
+    print(type(media))
+    media_id = media.media_id_string
+    api.update_status(topic, media_ids=[media_id])
 
     # printing the information
     #api.update_status(topic, media_ids=[medias_id[0], medias_id[1], medias_id[2], medias_id[3]])
@@ -89,12 +75,18 @@ if __name__ == "__main__":
     select_random_function = random.randint(0, 2)
 
     topic = "#"+str(randomnb)
-    medias = "/folder"
+    media = "test.png"
+
+    random_color = clr.generate_random_color()
+    quote = wd.select_quote("quotes.txt")
+    quote = wd.capitalize_first_letter(quote)
+
+    clr.generate_simple_art("test.png", random_color, quote)
 
     try:
-        #send_tweet_with_media(api, topic, medias)
+        #send_tweet_with_media(api, topic, media)
         #remove_image(media)
-        send_tweet(api, topic)
+        #send_tweet(api, topic)
         print("DONE")
     except tweepy.TweepError as e:
         print("ERROR WHILE SENDING THE TWEET : " + str(e))
