@@ -80,11 +80,12 @@ if __name__ == "__main__":
     api = connect_to_twitter_simple()
     select_random_function = random.randint(0, 2)
 
-    topic = "#"+str(randomnb)
 
     random_color = clr.generate_random_color()
     quote = wd.select_quote("quotes.txt")
     quote = wd.capitalize_first_letter(quote)
+    
+    topic = quote+" [#"+str(randomnb)+"]"
 
     clr.generate_simple_art("test.png", random_color, quote)
     media = select_image()
